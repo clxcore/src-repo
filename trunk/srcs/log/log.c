@@ -4,98 +4,6 @@
 #include <time.h>
 #include "log.h"
 
-#define LOG_CONF
-
-/* config file */
-#ifdef LOG_CONF
-
-#define CONF_MAX_LINE 4096
-
-const char *log_options[] = {
-    "file"  , NULL,
-    "level" , NULL,
-    "time"  , NULL,
-    "prefix", NULL,
-    "trace" , NULL,
-     NULL   , NULL
-};
-
-char *sdup(const char *src)
-{
-    char *p = NULL;
-    if (src && (p = malloc(strlen(src) + 1)))
-        strcpy(p, src);
-    return p;
-}
-
-const char *get_option(const char *name)
-{
-    const char **p = log_options;
-
-    while (*p) {
-        if (strcmp(*p, name) == 0)
-            break;
-        p += 2;
-    }
-    return *(p + 1);
-}
-
-const char *set_option(const char *name, const char *value)
-{
-    const char **p = log_options;
-
-    while (*p) {
-        if (strcmp(*p, name) == 0) {
-            *(p + 1) = sdup(value);
-            break;
-        }
-        p += 2;
-    }
-    return *p;
-}
-
-int log_conf_parse(const char *file, const char **options)
-{
-    char line[CONF_MAX_LINE], opt[sizeof(line)], val[sizeof(line)];
-    size_t line_no = 0, opt_no = 0;
-    FILE *fp;
-
-    fp = fopen(file, "rb");
-    if (fp == NULL)
-        return -1;
-    while (fgets(line, sizeof(line), fp) != NULL) {
-        line_no++;
-        if (line[0] == '#' || line[0] == '\n' ||
-            (line[0] == '\r' && line[1] == '\n'))
-            continue;
-        if (sscanf(line, "%s %[^\r\n#]", opt, val) != 2) {
-            printf("%s:%ld: %s\n",file, line_no,
-                   (line[strlen(line)-1] = '\0', line));
-            break;
-        }
-        ++opt_no;
-        if (set_option(opt, val) == NULL) {
-            opt_no = -1;
-            break;
-        }
-        /* printf("%4ld: opt[%s], val[%s]\n", opt_no, opt, val); */
-    }
-    fclose(fp);
-    return opt_no;
-}
-
-#endif
-
-static void log_default_options(log_t *p)
-{
-    if (p) {
-        p->flag = LOG_FLAG_OUTPUT | LOG_FLAG_TIME;
-        p->level = LOG_LEVEL_ALL;
-#ifdef LOG_CONF
-#endif
-    }
-}
-
 log_t *log_open(const char *filename)
 {
     log_t *p = NULL;
@@ -111,7 +19,9 @@ log_t *log_open(const char *filename)
         free(p);
         return NULL;
     }
-    log_default_options(p);
+    /* default options */
+    p->flag = LOG_FLAG_OUTPUT | LOG_FLAG_TIME | LOG_FLAG_PREFIX;
+    p->level = LOG_LEVEL_ALL;
     return p;
 }
 

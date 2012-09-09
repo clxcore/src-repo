@@ -3,10 +3,10 @@
 
 #include <stdio.h>
 
-#ifndef LOG_ALL_OFF
+#ifndef LOG_DISABLE
 
 #define LOG(p, l, f, ...) \
-    if (l <= p->level) log_write(__func__, __LINE__, fmt, __VA_ARGS__)
+    if (l <= p->level) log_write(__func__, __LINE__, f, __VA_ARGS__)
 
 #define LOG_FATAL(p, f, ...) \
     if (LOG_LEVEL_FATAL <= p->level) \
@@ -34,13 +34,13 @@
 
 #else
 
-#define LOG(      p, l, ...) ((void) 0)
-#define LOG_FATAL(p, l, ...) ((void) 0)
-#define LOG_ERROR(p, l, ...) ((void) 0)
-#define LOG_WARN( p, l, ...) ((void) 0)
-#define LOG_INFO( p, l, ...) ((void) 0)
-#define LOG_DEBUG(p, l, ...) ((void) 0)
-#define LOG_TRACE(p, l, ...) ((void) 0)
+#define LOG(   p, l, f, ...) ((void) 0)
+#define LOG_FATAL(p, f, ...) ((void) 0)
+#define LOG_ERROR(p, f, ...) ((void) 0)
+#define LOG_WARN( p, f, ...) ((void) 0)
+#define LOG_INFO( p, f, ...) ((void) 0)
+#define LOG_DEBUG(p, f, ...) ((void) 0)
+#define LOG_TRACE(p, f, ...) ((void) 0)
 
 #endif
 
@@ -65,7 +65,7 @@ typedef enum log_flag_t_ {
 typedef struct log_t_ {
     log_flag_t  flag;
     log_level_t level;
-    char *prefix;
+    const char *prefix;
     FILE *fp;
 } log_t;
 
