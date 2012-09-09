@@ -1,0 +1,16 @@
+[core]
+	quotepath = false
+[user]
+	name = lixin chen
+	email = clxcore@gmail.com
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+[color]
+	status = auto
+	diff = auto
+	grep = auto
+	branch = auto
+	interactive = auto

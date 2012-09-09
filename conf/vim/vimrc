@@ -1,0 +1,145 @@
+" vimrc file
+"
+" author: lixin chen (clxcore@gmail.com)
+"
+" Change history: 
+"
+" 1.0        2010-03-24
+" 1.0.1      2010-11-20
+" 1.1        2011-05-22
+" 1.1.1      2011-09-03
+" 1.1.2      2011-11-05
+" 1.1.3      2011-11-06
+" 1.1.4      2011-11-07
+
+"*********************************************
+"不兼容旧vi
+set nocompatible
+
+"设置编码
+set enc=utf-8
+"设置文件编码
+set fenc=utf-8
+"设置文件编码检测类型及支持格式
+set fencs=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+"设置换行符的格式
+set fileformat=unix
+set fileformats=unix,dos
+"指定菜单,语言
+set langmenu=zh_cn.utf-8
+"source $VIMRUNTIME/delmenu.vim "清空之前菜单
+"source $VIMRUNTIME/menu.vim    "加载新菜单
+
+"****display**********************************
+set ruler          "显示标尺
+set incsearch      "显示查找位置(增量搜索)
+set hlsearch       "查找结果高亮度显示
+
+"tab宽度
+set tabstop=8      "tab长度
+set shiftwidth=4   "设置缩进长度
+set softtabstop=4  "设置插入tab时的长度
+set expandtab      "将插入的tab转换为空格
+
+"tab将被显示为>—-的形式
+set listchars=tab:>-,trail:-
+"set list          "默认显示tab
+
+if has("gui_running")
+    "set guioptions-=T       "去掉工具条
+    colorscheme desert_shine "使用desert颜色主题
+endif
+
+"macvim
+if has("gui_macvim")
+    set guifont=DejaVu\ Sans\ Mono:h12
+endif
+
+"win32
+if has("gui_win32")
+    if 1
+        "10px (适合<14英寸屏幕)
+        set guifont=Bitstream_Vera_Sans_Mono:h9:cANSI
+        set gfw=Yahei_Mono:h10:cGB2312
+    else
+        "10.5px (适合>17英寸屏幕)
+        set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI
+        set gfw=Yahei_Mono:h10.5:cGB2312
+    endif
+
+    set guioptions-=T       "去掉工具条
+    set grepprg=grep\ -nH
+    au GUIEnter * simalt ~x "窗口最大化
+endif
+
+syntax on                "打开语法高亮
+set showcmd              "在屏幕最后一行显示命令信息
+
+"****ctrl**********************************
+filetype plugin indent on "打开文件类型检测
+
+"ctrl-n补全设置(默认:complete=.,w,b,u,t,i)
+set complete=.,w,b,u,t
+
+set nobackup       "覆盖文件前不创建一个备份.
+set nowritebackup  "覆盖文件前建立备份。文件成功写入后删除
+"set noswapfile    "不使用交换文件(*.swp).
+
+set backspace=indent,eol,start "设置退格删除
+"set whichwrap+=<,>,[,]        "允许光标键进行回绕
+
+"indent style
+set cinoptions=(N
+
+"代码折叠 (fold)
+set foldmethod=syntax 
+set foldlevel=100   "启动vim时不要自动折叠代码
+
+"全能补全显示设置
+set completeopt=longest,menu
+
+"****cmds**********************************
+"设置当前目录为工作目录
+command CD cd %:p:h
+command LCD lcd %:p:h
+
+"切换搜索高亮
+command NOH set hlsearch!
+"高亮当前行
+command LINE set cursorline!
+
+"****map***********************************
+"缓冲区切换
+nmap <C-S-Tab> :bprevious!<CR>
+nmap <C-Tab> :bnext!<CR>
+imap <C-S-Tab> <Esc>:bprevious!<CR>i
+imap <C-Tab> <Esc>:bnext!<CR>i
+
+"标签切换
+nmap <S-Tab> gt
+imap <S-Tab> <Esc>gt a
+
+"插入模式快速移动
+imap <C-h> <Left>
+imap <C-j> <Down>
+imap <C-k> <Up>
+imap <C-l> <Right>
+
+"cmdline编辑
+cnoremap <C-H> <Left>
+cnoremap <C-L> <Right>
+cnoremap <C-X>h <C-Left>
+cnoremap <C-X>l <C-Right>
+
+"显示缓冲区列表
+nmap <S-Space> :ls!<CR>
+
+"****plugin-set****************************
+"Tag list (ctags)
+if has("mac")
+    let Tlist_Ctags_Cmd = 'ectags' "设置ctags程序
+else
+    let Tlist_Ctags_Cmd = 'ctags' "设置ctags程序
+endif
+let Tlist_Show_One_File = 1    "不同时显示多个文件的tag，只显示当前文件的
+let Tlist_Exit_OnlyWindow = 1  "如果taglist窗口是最后一个窗口，则退出vim
