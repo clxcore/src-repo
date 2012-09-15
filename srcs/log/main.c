@@ -19,6 +19,7 @@ int main(int argc, char **argv)
     LOG_WARN(log, "5, time[%ld]", time(NULL));
     log->flag |= LOG_FLAG_TIME;
     LOG_FATAL(log, "6, time[%ld]", time(NULL));
+    LOG_FATAL(log, "=========");
 
     log_close(log);
     return 0;

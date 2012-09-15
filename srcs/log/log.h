@@ -5,32 +5,32 @@
 
 #ifndef LOG_DISABLE
 
-#define LOG(p, l, f, ...) \
-    if (l <= p->level) log_write(__func__, __LINE__, f, __VA_ARGS__)
+#define LOG(p, l, ...) \
+    if (l <= p->level) log_write(__func__, __LINE__, __VA_ARGS__)
 
-#define LOG_FATAL(p, f, ...) \
+#define LOG_FATAL(p, ...) \
     if (LOG_LEVEL_FATAL <= p->level) \
-        log_write(p, __func__, __LINE__, f, __VA_ARGS__)
+        log_write(p, __func__, __LINE__, __VA_ARGS__)
 
-#define LOG_ERROR(p, f, ...) \
+#define LOG_ERROR(p, ...) \
     if (LOG_LEVEL_ERROR <= p->level) \
-        log_write(p, __func__, __LINE__, f, __VA_ARGS__)
+        log_write(p, __func__, __LINE__, __VA_ARGS__)
 
-#define LOG_WARN(p, f, ...) \
+#define LOG_WARN(p, ...) \
     if (LOG_LEVEL_WARN  <= p->level) \
-        log_write(p, __func__, __LINE__, f, __VA_ARGS__)
+        log_write(p, __func__, __LINE__, __VA_ARGS__)
 
-#define LOG_INFO(p, f, ...) \
+#define LOG_INFO(p, ...) \
     if (LOG_LEVEL_INFO  <= p->level) \
-        log_write(p, __func__, __LINE__, f, __VA_ARGS__)
+        log_write(p, __func__, __LINE__, __VA_ARGS__)
 
-#define LOG_DEBUG(p, f, ...) \
+#define LOG_DEBUG(p, ...) \
     if (LOG_LEVEL_DEBUG <= p->level) \
-        log_write(p, __func__, __LINE__, f, __VA_ARGS__)
+        log_write(p, __func__, __LINE__, __VA_ARGS__)
 
-#define LOG_TRACE(p, f, ...) \
+#define LOG_TRACE(p, ...) \
     if (LOG_LEVEL_TRACE <= p->level) \
-        log_write(p, __func__, __LINE__, f, __VA_ARGS__)
+        log_write(p, __func__, __LINE__, __VA_ARGS__)
 
 #else
 
